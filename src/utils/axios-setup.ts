@@ -4,7 +4,7 @@ import axios from 'axios';
 export function axiosSetup (): void {
 
   axios.interceptors.response.use((response) => response, (error) => {
-    if (error.response.status === 401) {
+    if (error.response.status > 299) {
       store.dispatch('logout');
     }
 
@@ -13,7 +13,7 @@ export function axiosSetup (): void {
 
   axios.interceptors.request.use(function (config) {
     config.headers.common = {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
       Accept: 'application/json'
     };

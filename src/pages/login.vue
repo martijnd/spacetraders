@@ -35,6 +35,7 @@
 <script lang="ts">
 import TextInput from '@/components/TextInput.vue';
 import { useStore } from '@/store';
+import axios from 'axios';
 import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
@@ -48,9 +49,12 @@ export default defineComponent({
  
     async function onSubmit() {
       try {
-        store.dispatch('login', {username: state.username, token: state.token});
+        const response = await axios.get(`/users/${state.username}`, {headers: {
+          Authorization: `Bearer ${state.token}`
+        }});
+        store.dispatch('login', {username: state.username, token: state.token, user: response.data.user});
       } catch (e) {
-        console.log(e);
+        console.log(e.response.data.error.message);
       }
     }
 

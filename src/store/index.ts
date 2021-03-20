@@ -1,4 +1,5 @@
 import router from '@/router';
+import { User } from '@/types';
 import { InjectionKey } from 'vue';
 import { createStore, useStore as baseUseStore, Store, Getter, ActionTree, MutationTree } from 'vuex';
 
@@ -6,33 +7,36 @@ export const key: InjectionKey<Store<State>> = Symbol();
 
 // ----- Store ------- //
 export interface State {
-  authenticated: boolean
+  user: User|null;
 }
 const state: State = {
-  authenticated: !!localStorage.authToken
+  user: null
 };
 
 const getters: Record<string, Getter<State, State>> = {};
 
 const mutations: MutationTree<State> = {
-  login (state, data) {
-    localStorage.setItem('username', data.username);
-    localStorage.setItem('token', data.token);
-    state.authenticated = true;
+  login (state, {username, token}) {
+    localStorage.setItem('username', username);
+    localStorage.setItem('token', token);
     router.push(localStorage.redirect ?? '/');
     localStorage.removeItem('redirect');
   },
   logout (state) {
-    router.push('/login');
     localStorage.removeItem('username');
     localStorage.removeItem('token');
-    state.authenticated = false;
+    state.user = null;
+    router.push('/login');
+  },
+  setUserData(state, user: User) {
+    state.user = user;
   }
 };
 
 const actions: ActionTree<State, State> = {
-  login ({commit}, data) {
-    commit('login', data);
+  login ({commit}, {username, token, user}: {username: string, token: string, user: User}) {
+    commit('login', {username, token});
+    commit('setUserData', user);
   },
   logout ({commit}) {
     commit('logout');
