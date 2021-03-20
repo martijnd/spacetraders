@@ -6,7 +6,7 @@
   </PrimaryTitle>
   <div
     v-if="data"
-    class="grid md:grid-cols-2 gap-4"
+    class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
   >
     <ShipCard
       v-for="ship of data.ships"
