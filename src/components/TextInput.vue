@@ -2,6 +2,8 @@
   <input
     v-bind="$attrs"
     class="w-full mb-2 dark:bg-gray-900 block text-gray-800 rounded-sm py-2 px-4"
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
   >
 </template>
 
@@ -9,6 +11,12 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-
+  props: {
+    modelValue: {
+      type: [String, Number],
+      default: ''
+    }
+  },
+  emits: ['update:modelValue']
 });
 </script>

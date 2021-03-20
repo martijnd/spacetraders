@@ -5,28 +5,28 @@
       @submit.prevent="onSubmit"
     >
       <h2 class="font-bold text-white">
-        Login
+        Please log in
       </h2>
       <label class="block mb-2 text-white">
         Username
         <TextInput
           v-model="state.username"
-          placeholder="E-mail"
+          placeholder="Username"
           autocomplete="username"
-          name="email"
+          name="username"
           type="text"
         /></label>
       <label class="block mb-2 text-white">
-        Password
+        Token
         <TextInput
-          v-model="state.password"
-          autocomplete="current-password"
-          placeholder="Password"
-          name="current-password"
-          type="password"
+          v-model="state.token"
+          autocomplete="off"
+          placeholder="Token"
+          name="token"
+          type="text"
         /></label>
       <button class="text-purple-600 bg-white rounded px-4 py-2 font-bold ">
-        Submit
+        Login
       </button>
     </form>
   </div>
@@ -35,29 +35,20 @@
 <script lang="ts">
 import TextInput from '@/components/TextInput.vue';
 import { useStore } from '@/store';
-import axios from 'axios';
 import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
   components: { TextInput },
   setup() {
+    const store = useStore();
     const state = reactive({
-      username: '',
-      password: '',
+      username: import.meta.env.VITE_USERNAME,
+      token: import.meta.env.VITE_TOKEN,
     });
-    const {dispatch} = useStore();
+ 
     async function onSubmit() {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/oauth/token`, {
-          grant_type: 'password',
-          client_id: import.meta.env.VITE_CLIENT_ID,
-          client_secret: import.meta.env.VITE_CLIENT_SECRET,
-          username: state.username,
-          password: state.password,
-          scope: '',
-        });
-
-        dispatch('login', response.data.access_token);
+        store.dispatch('login', {username: state.username, token: state.token});
       } catch (e) {
         console.log(e);
       }

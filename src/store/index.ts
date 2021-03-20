@@ -15,22 +15,24 @@ const state: State = {
 const getters: Record<string, Getter<State, State>> = {};
 
 const mutations: MutationTree<State> = {
-  login (state, token) {
-    localStorage.setItem('authToken', token);
+  login (state, data) {
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('token', data.token);
     state.authenticated = true;
     router.push(localStorage.redirect ?? '/');
     localStorage.removeItem('redirect');
   },
   logout (state) {
     router.push('/login');
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
     state.authenticated = false;
   }
 };
 
 const actions: ActionTree<State, State> = {
-  login ({commit}, token) {
-    commit('login', token);
+  login ({commit}, data) {
+    commit('login', data);
   },
   logout ({commit}) {
     commit('logout');
