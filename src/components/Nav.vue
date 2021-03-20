@@ -12,7 +12,13 @@
       <div v-else>
         SpaceTraders
       </div>
-      <div class="space-x-4">
+      <div
+        v-if="$store.state.user"
+        class="flex space-x-4 items-center"
+      >
+        <div>
+          {{ $store.state.user.credits }} credits
+        </div>
         <button
           @click="toggleTheme"
         >
@@ -25,6 +31,16 @@
         >
           Log out
         </SpaButton>
+      </div>
+      <div
+        v-else
+        class="space-x-4"
+      >
+        <button
+          @click="toggleTheme"
+        >
+          {{ theme === 'dark' ? '🌞' : '🌑' }}
+        </button>
       </div>
     </nav>
   </div>
