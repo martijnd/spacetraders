@@ -1,6 +1,6 @@
 <template>
   <PrimaryTitle>
-    Home
+    SpaceTraders
   </PrimaryTitle>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen flex flex-col">
     <Nav />
-    <main class="container max-w-screen-lg mx-auto p-4">
+    <main class="container max-w-screen-lg mx-auto p-4 flex-grow">
       <router-view />
     </main>
   </div>

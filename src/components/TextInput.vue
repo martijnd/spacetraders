@@ -1,7 +1,7 @@
 <template>
   <input
     v-bind="$attrs"
-    class="w-full mb-2 dark:bg-gray-900"
+    class="w-full mb-2 dark:bg-gray-900 block text-gray-800 rounded-sm py-2 px-4"
   >
 </template>
 

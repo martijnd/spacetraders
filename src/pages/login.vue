@@ -1,7 +1,7 @@
 <template>
   <div class="grid place-items-center">
     <form
-      class="p-4 bg-purple-600 rounded shadow-lg space-y-4"
+      class="p-4 bg-purple-600 rounded shadow-lg space-y-4 w-72"
       @submit.prevent="onSubmit"
     >
       <h2 class="font-bold text-white">
@@ -9,24 +9,22 @@
       </h2>
       <label class="block mb-2 text-white">
         Username
-        <input
+        <TextInput
           v-model="state.username"
           placeholder="E-mail"
           autocomplete="username"
           name="email"
-          class="block text-gray-800 w-72 rounded"
           type="text"
-        ></label>
+        /></label>
       <label class="block mb-2 text-white">
         Password
-        <input
+        <TextInput
           v-model="state.password"
           autocomplete="current-password"
           placeholder="Password"
           name="current-password"
-          class="block text-gray-800 w-72 rounded"
           type="password"
-        ></label>
+        /></label>
       <button class="text-purple-600 bg-white rounded px-4 py-2 font-bold ">
         Submit
       </button>
@@ -35,11 +33,13 @@
 </template>
 
 <script lang="ts">
+import TextInput from '@/components/TextInput.vue';
 import { useStore } from '@/store';
 import axios from 'axios';
 import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
+  components: { TextInput },
   setup() {
     const state = reactive({
       username: '',
