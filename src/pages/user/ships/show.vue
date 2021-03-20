@@ -11,42 +11,38 @@
     </div>
 
     <div>
-      <PrimaryTitle>Ship's location</PrimaryTitle>
-      <router-link
-        v-if="!flightPlan"
-        :to="`/locations/${data.ship.location}`"
-      >
-        {{ data.ship.location }}
-      </router-link>
-      <div v-else>
-        Currently travelling
-      </div>
-      <PrimaryTitle> Current flight plan</PrimaryTitle>
-      <div
-        v-if="flightPlan"
-        class="grid grid-cols-2"
-      >
-        <h3 class="font-bold">
-          Fuel consumed
-        </h3> <span>{{ flightPlan.flightPlan.fuelConsumed }}</span>
-        <h3 class="font-bold">
-          Departure
-        </h3> <span>{{ flightPlan.flightPlan.departure }}</span>
-        <h3 class="font-bold">
-          Destination
-        </h3> <span>{{ flightPlan.flightPlan.destination }}</span>
-        <h3 class="font-bold">
-          Distance
-        </h3> <span>{{ flightPlan.flightPlan.distance }}</span>
-        <h3 class="font-bold">
-          Fuel remaining
-        </h3> <span>{{ flightPlan.flightPlan.fuelRemaining }}</span>
-        <h3 class="font-bold">
-          Time remaining (sec)
-        </h3> <span>{{ flightPlan.flightPlan.timeRemainingInSeconds }}</span>
+      <div v-if="!flightPlan">
+        <PrimaryTitle>Ship's location</PrimaryTitle>
+        <router-link
+          :to="`/locations/${data.ship.location}`"
+        >
+          {{ data.ship.location }}
+        </router-link>
       </div>
       <div v-else>
-        None
+        <PrimaryTitle> Current flight plan</PrimaryTitle>
+        <div
+          class="grid grid-cols-2"
+        >
+          <h3 class="font-bold">
+            Fuel consumed
+          </h3> <span>{{ flightPlan.flightPlan.fuelConsumed }}</span>
+          <h3 class="font-bold">
+            Departure
+          </h3> <span>{{ flightPlan.flightPlan.departure }}</span>
+          <h3 class="font-bold">
+            Destination
+          </h3> <span>{{ flightPlan.flightPlan.destination }}</span>
+          <h3 class="font-bold">
+            Distance
+          </h3> <span>{{ flightPlan.flightPlan.distance }}</span>
+          <h3 class="font-bold">
+            Fuel remaining
+          </h3> <span>{{ flightPlan.flightPlan.fuelRemaining }}</span>
+          <h3 class="font-bold">
+            Time remaining (sec)
+          </h3> <span>{{ flightPlan.flightPlan.timeRemainingInSeconds }}</span>
+        </div>
       </div>
     </div>
   </div>
