@@ -43,8 +43,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const state = reactive({
-      username: import.meta.env.VITE_USERNAME,
-      token: import.meta.env.VITE_TOKEN,
+      username: '',
+      token: '',
     });
  
     async function onSubmit() {
