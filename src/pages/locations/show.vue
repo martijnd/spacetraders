@@ -22,25 +22,29 @@
         {{ ship.manufacturer }}
       </option>
     </select>
+    <SpaButton 
+      :disabled="currentShip && currentShip.location === data.location.symbol"
+      @click="onClickCreateFlightPath"
+    >
+      Create flight path
+    </SpaButton>
     
     <div
       v-if="currentShip"
     >
-      <SpaButton 
-        v-if="currentShip.location.symbol === data.location.symbol"
-        :disabled="currentShip === null"
-        @click="onClickCreateFlightPath"
-      >
-        Create flight path
-      </SpaButton>
-
       <hr class="my-8">
       <UserShipCard :ship="currentShip" />
     </div>
     <hr class="my-8">
 
+    <Alert
+      v-if="marketplaceError && currentShip"
+      type="error"
+      :title="marketplaceError.response.data.error.message"
+    />
+
     <div v-if="marketplace && currentShip">
-      <PrimaryTitle>Marketplace</PrimaryTitle>
+      <PrimaryTitle>Marketplace ({{ data.location.name }})</PrimaryTitle>
       <SecondaryTitle class="mb-4">
         Buying
       </SecondaryTitle>
@@ -110,6 +114,7 @@ import TableContainer, { ITableHeader } from '@/components/table/TableContainer.
 import TextInput from '@/components/TextInput.vue';
 import SecondaryTitle from '@/components/SecondaryTitle.vue';
 import UserShipCard from '@/components/UserShipCard.vue';
+import Alert from '@/components/Alert.vue';
 
 export default defineComponent({
   components: {
@@ -118,7 +123,8 @@ export default defineComponent({
     TableContainer,
     TextInput,
     SecondaryTitle,
-    UserShipCard, 
+    UserShipCard,
+    Alert, 
   },
   setup() {
     const route = useRoute();
@@ -128,10 +134,12 @@ export default defineComponent({
       fetcher
     );
 
-
     // @ts-ignore
-    const {data: marketplace} = useSWRV(() => data.value?.location.symbol && 
-      `/game/locations/${data.value.location.symbol}/marketplace`, fetcher);
+    const {data: marketplace, error: marketplaceError, mutate} = useSWRV(() => 
+      data.value?.location.symbol 
+      && `/game/locations/${data.value.location.symbol}/marketplace`, fetcher, {
+        shouldRetryOnError: false,
+      });
 
     const store = useStore();
      const { data: ships } = useSWRV<{ locations: Location }>(
@@ -201,6 +209,7 @@ export default defineComponent({
     function onTransaction(data: Transaction) {
         store.dispatch('updateCredits', data.credits);
         currentShip.value = data.ship;
+        mutate();
     }
 
     async function onSell (item: Cargo&{sellQuantity?: number}) {
@@ -229,7 +238,8 @@ export default defineComponent({
       marketplaceHeaders,
       onPurchase,
       onSell,
-      sellingHeaders
+      sellingHeaders,
+      marketplaceError
     };
   },
 });

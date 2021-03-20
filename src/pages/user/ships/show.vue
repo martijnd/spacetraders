@@ -7,9 +7,15 @@
     />
 
     <PrimaryTitle>Ship's location</PrimaryTitle>
-    <router-link :to="`/locations/${data.ship.location}`">
+    <router-link
+      v-if="!flightPlan"
+      :to="`/locations/${data.ship.location}`"
+    >
       {{ data.ship.location }}
     </router-link>
+    <div v-else>
+      Currently travelling
+    </div>
 
     <PrimaryTitle> Current flight plan</PrimaryTitle>
 
@@ -17,7 +23,24 @@
       v-if="flightPlan"
       class="grid grid-cols-2"
     >
-      <h3>Fuel consumed</h3> <span>{{ flightPlan.fuelConsumed }}</span>
+      <h3 class="font-bold">
+        Fuel consumed
+      </h3> <span>{{ flightPlan.flightPlan.fuelConsumed }}</span>
+      <h3 class="font-bold">
+        Departure
+      </h3> <span>{{ flightPlan.flightPlan.departure }}</span>
+      <h3 class="font-bold">
+        Destination
+      </h3> <span>{{ flightPlan.flightPlan.destination }}</span>
+      <h3 class="font-bold">
+        Distance
+      </h3> <span>{{ flightPlan.flightPlan.distance }}</span>
+      <h3 class="font-bold">
+        Fuel remaining
+      </h3> <span>{{ flightPlan.flightPlan.fuelRemaining }}</span>
+      <h3 class="font-bold">
+        Time remaining (sec)
+      </h3> <span>{{ flightPlan.flightPlan.timeRemainingInSeconds }}</span>
     </div>
     <div v-else>
       None
@@ -51,8 +74,10 @@ export default defineComponent({
     );
 
     // @ts-ignore
-    const {data: flightPlan} = useSWRV(() => data.value?.ship.flightPlanId && 
-      `/users/${store.state.user?.username}/flight-plans/${data.value?.ship.flightPlanId}`, fetcher);
+    const {data: flightPlan, } = useSWRV(() => data.value?.ship.flightPlanId && 
+      `/users/${store.state.user?.username}/flight-plans/${data.value?.ship.flightPlanId}`, fetcher, {
+        refreshInterval: 1000
+      });
 
     return {
       data,
