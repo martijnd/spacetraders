@@ -3,13 +3,25 @@ import axios from 'axios';
 import { RouteRecordRaw, createRouter, NavigationGuard, createWebHistory } from 'vue-router';
 
 
-const guest: NavigationGuard = (to, from, next) => {
+const guest: NavigationGuard = async (to, from, next) => {
+  if (localStorage.username && localStorage.token) {
+    try {
+      const response = await axios.get(`/users/${localStorage.username}`, {headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }});
+      store.dispatch('login', {username: localStorage.username, token: localStorage.token, user: response.data.user});
+    } catch (e) {
+      localStorage.setItem('redirect', to.fullPath);
+      return next('/login');
+    } 
+  }
+
   const isAuthenticated = store.state.user;
   if (!isAuthenticated) {
     return next();
-  } else {
-    return next('/');
   }
+  
+  return next('/');
 };
 
 const auth: NavigationGuard = async (to, from, next) => {

@@ -2,7 +2,7 @@
   <div class="border-b shadow">
     <nav class="container max-w-screen-lg mx-auto flex justify-between items-center p-4">
       <div
-        v-if="$store.state.authenticated"
+        v-if="$store.state.user"
         class="space-x-4 md:space-x-8"
       >
         <NavLink to="/">
@@ -19,7 +19,7 @@
           {{ theme === 'dark' ? '🌞' : '🌑' }}
         </button>
         <SpaButton
-          v-if="$store.state.authenticated"
+          v-if="$store.state.user"
           variant="secondary"
           @click="onClickLogout"
         >
