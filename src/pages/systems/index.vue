@@ -2,17 +2,17 @@
   <PrimaryTitle
     class="mb-8"
   >
-    Ships
+    Systems
   </PrimaryTitle>
   <div
     v-if="data"
     class="grid md:grid-cols-2 gap-4"
   >
-    <ShipCard
-      v-for="ship of data.ships"
-      :key="ship.type"
+    <SystemCard
+      v-for="system of data.systems"
+      :key="system.type"
       class="bg-blue-700 hover:bg-blue-900 text-white"
-      :ship="ship"
+      :system="system"
     />
   </div>
 </template>
@@ -22,16 +22,16 @@ import { defineComponent } from 'vue';
 import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
-import ShipCard from '@/components/ShipCard.vue';
-import { Ship } from '@/types';
+import SystemCard from '@/components/SystemCard.vue';
+import { System } from '@/types';
 
 export default defineComponent({
   components: {
     PrimaryTitle,
-    ShipCard
+    SystemCard
   },
   setup () {
-    const {data, error} = useSWRV<{ships: Ship[]}>('/game/ships', fetcher);
+    const {data, error} = useSWRV<{systems: System[]}>('/game/systems', fetcher);
 
     return {
         data, 

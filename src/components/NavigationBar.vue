@@ -5,7 +5,10 @@
         v-for="menuItem of menuItems"
         :key="menuItem.name"
       >
-        <NavLink :to="menuItem.to">
+        <NavLink
+          :to="menuItem.to"
+          class="py-2 block"
+        >
           {{ menuItem.name }}
         </NavLink>
       </li>

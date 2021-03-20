@@ -34,3 +34,9 @@ export interface Ship {
     plating: number;
     weapons: number;
 }
+
+export interface System {
+    symbol: string;
+    name: string;
+    locations: Location[];
+}
