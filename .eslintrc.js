@@ -4,14 +4,14 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/typescript',
-    '@vue/typescript/recommended'
+    '@vue/typescript/recommended',
+    'plugin:vue/vue3-recommended'
   ],
   rules: {
     // override/add rules settings here, such as:
-    // vue/no-unused-vars: error,
+    'vue/no-unused-vars': 'error',
     'semi': 1,
     'no-console': 1,
     'vue/comment-directive': 0,

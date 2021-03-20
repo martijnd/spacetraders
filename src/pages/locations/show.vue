@@ -7,13 +7,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import useSWRV from 'swrv';
-import { fetcher } from '@/utils/fetcher';
+import { fetcher } from '@/utils/fetcher';   
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
   components: {
-    PrimaryTitle,
+    PrimaryTitle, 
   },
   setup() {
     const route = useRoute();

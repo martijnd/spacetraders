@@ -18,7 +18,7 @@
         </h2>
         <span class="bg-dark rounded-full text-white p-2">{{ system.symbol }}</span>
       </div>
-
+ 
       <div
         v-for="location of system.locations"
         :key="location.name"
@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue';  
 import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
@@ -42,7 +42,7 @@ import { System } from '@/types';
 
 export default defineComponent({
   components: {
-    PrimaryTitle
+    PrimaryTitle 
   },
   setup () {
     const {data, error} = useSWRV<{systems: System[]}>('/game/systems', fetcher);
