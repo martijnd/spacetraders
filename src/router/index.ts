@@ -1,27 +1,24 @@
 import { store } from '@/store';
-import axios from 'axios';
 import { RouteRecordRaw, createRouter, NavigationGuard, createWebHistory } from 'vue-router';
 
 
 const guest: NavigationGuard = async (to, from, next) => {
-  if (localStorage.username && localStorage.token) {
-    try {
-      const response = await axios.get(`/users/${localStorage.username}`, {headers: {
-        Authorization: `Bearer ${localStorage.token}`
-      }});
-      store.dispatch('login', {username: localStorage.username, token: localStorage.token, user: response.data.user});
-    } catch (e) {
-      localStorage.setItem('redirect', to.fullPath);
-      return next('/login');
-    } 
-  }
-
-  const isAuthenticated = store.state.user;
-  if (!isAuthenticated) {
+  if (!store.state.authenticated) {
     return next();
   }
   
-  return next('/');
+  if (localStorage.username && localStorage.token) {
+    try {
+      await store.dispatch('fetchUserData');
+      return next('/');
+    } catch (e) {
+      localStorage.setItem('redirect', to.fullPath);
+      store.dispatch('logout');
+      return next();
+    } 
+  }
+  
+  return next();
 };
 
 const auth: NavigationGuard = async (to, from, next) => {
@@ -32,19 +29,16 @@ const auth: NavigationGuard = async (to, from, next) => {
 
   if (localStorage.username && localStorage.token) {
     try {
-      const response = await axios.get(`/users/${localStorage.username}`, {headers: {
-        Authorization: `Bearer ${localStorage.token}`
-      }});
-      store.dispatch('login', {username: localStorage.username, token: localStorage.token, user: response.data.user});
+      await store.dispatch('fetchUserData');
+      return next();
     } catch (e) {
       localStorage.setItem('redirect', to.fullPath);
-      return next('/login');
+      store.dispatch('logout');
     }
   }
-  
+
   localStorage.setItem('redirect', to.fullPath);
   return next('/login');
-  
 };
 
 const routes: RouteRecordRaw[] = [

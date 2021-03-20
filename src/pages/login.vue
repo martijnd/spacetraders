@@ -25,7 +25,7 @@
           name="token"
           type="text"
         /></label>
-      <button class="text-purple-600 bg-white rounded px-4 py-2 font-bold ">
+      <button class="text-purple-600 bg-white rounded px-4 py-2 font-bold">
         Login
       </button>
     </form>
@@ -35,7 +35,6 @@
 <script lang="ts">
 import TextInput from '@/components/TextInput.vue';
 import { useStore } from '@/store';
-import axios from 'axios';
 import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
@@ -43,16 +42,16 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const state = reactive({
-      username: '',
-      token: '',
+      username: import.meta.env.VITE_USERNAME,
+      token: import.meta.env.VITE_TOKEN,
     });
- 
+
     async function onSubmit() {
       try {
-        const response = await axios.get(`/users/${state.username}`, {headers: {
-          Authorization: `Bearer ${state.token}`
-        }});
-        store.dispatch('login', {username: state.username, token: state.token, user: response.data.user});
+        await store.dispatch('login', {
+          username: state.username,
+          token: state.token,
+        });
       } catch (e) {
         console.log(e.response.data.error.message);
       }
