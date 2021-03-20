@@ -6,7 +6,7 @@ const guest: NavigationGuard = async (to, from, next) => {
   if (!store.state.authenticated) {
     return next();
   }
-  
+
   if (localStorage.username && localStorage.token) {
     try {
       await store.dispatch('fetchUserData');
@@ -47,6 +47,12 @@ const routes: RouteRecordRaw[] = [
     name: 'Home',
     beforeEnter: auth,
     component: () => import(/* webpackChunkName: "home" */ '../pages/index.vue')
+  },
+  {
+    path: '/ships',
+    name: 'ShipsIndex',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "ShipsIndex" */ '../pages/ships/index.vue')
   },
   {
     path: '/login',
