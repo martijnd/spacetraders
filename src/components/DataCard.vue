@@ -1,14 +1,14 @@
 <template>
   <div
     v-bind="$attrs"
-    class="grid grid-cols-1 lg:grid-cols-2 rounded p-4 shadow hover:shadow-md transition-shadow duration-100"
+    class="grid grid-cols-1 p-4 transition-all duration-100 rounded shadow lg:grid-cols-2 hover:shadow-md dark:bg-white dark:text-dark"
   >
     <div
       v-for="entry of Object.entries(data)"
       :key="entry[0]"
       class="mb-4"
     >
-      <h3 class="font-bold text-lg">
+      <h3 class="text-lg font-bold">
         {{ toSentence(entry[0]) }}
       </h3>
       <span v-if="['string', 'number'].includes(typeof entry[1])">{{
@@ -26,13 +26,16 @@
             v-for="attr in Object.entries(x)"
             :key="attr[0]"
           >
-            <h4 class="font-bold italic">
-              {{ attr[0] }}
+            <h4 class="italic font-bold">
+              {{ toSentence(attr[0]) }}
             </h4>
-            <span>{{ attr[1] }}</span>
+            <span>{{ attr[0] === 'price' ? new Intl.NumberFormat('nl-NL').format(attr[1]) : attr[1] }}</span>
           </div>
         </li>
       </ul>
+    </div>
+    <div>
+      <slot name="actions" />
     </div>
   </div>
 </template>

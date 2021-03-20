@@ -17,7 +17,7 @@
         class="flex space-x-4 items-center"
       >
         <div>
-          {{ $store.state.user.credits }} credits
+          {{ new Intl.NumberFormat('nl-NL').format($store.state.user.credits) }} credits
         </div>
         <button
           @click="toggleTheme"
