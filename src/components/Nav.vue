@@ -1,6 +1,6 @@
 <template>
-  <div class="border-b shadow">
-    <nav class="container max-w-screen-lg mx-auto flex justify-between items-center p-4">
+  <nav class="border-b shadow">
+    <div class="container max-w-screen-lg mx-auto flex justify-between items-center p-4">
       <div
         v-if="$store.state.user"
         class="space-x-4 md:space-x-8"
@@ -42,8 +42,8 @@
           {{ theme === 'dark' ? '🌞' : '🌑' }}
         </button>
       </div>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script lang="ts">
