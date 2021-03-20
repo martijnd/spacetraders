@@ -1,12 +1,12 @@
 <template>
   <div
     v-bind="$attrs"
-    class="grid grid-cols-1 p-4 transition-all duration-100 rounded shadow lg:grid-cols-2 hover:shadow-md dark:bg-white dark:text-dark"
+    class="grid grid-cols-1 transition-all duration-100 rounded shadow lg:grid-cols-2 hover:shadow-md dark:bg-white dark:text-dark"
   >
     <div
       v-for="entry of Object.entries(data)"
       :key="entry[0]"
-      class="mb-4"
+      class="mb-4 p-4"
     >
       <h3 class="text-lg font-bold">
         {{ toSentence(entry[0]) }}
@@ -34,7 +34,10 @@
         </li>
       </ul>
     </div>
-    <div>
+    <div
+      v-if="$slots.actions"
+      class="border-t col-span-2 p-4"
+    >
       <slot name="actions" />
     </div>
   </div>

@@ -34,7 +34,8 @@ export default defineComponent({
     const {data, error} = useSWRV<{ships: Ship[]}>('/game/ships', fetcher);
 
     return {
-        data, error
+        data, 
+        error
     };
   }
 });
