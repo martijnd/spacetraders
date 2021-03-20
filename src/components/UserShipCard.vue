@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import { Ship } from '@/types';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import DataCard from './DataCard.vue';
 
 export default defineComponent({
@@ -103,8 +103,7 @@ export default defineComponent({
       },
     ];
 
-    const totalCargo = props.ship.cargo.reduce((acc, curr) => acc + curr.quantity, 0);
-
+    const totalCargo = computed(() => props.ship.cargo.reduce((acc, curr) => acc + curr.quantity, 0));
     return {
       attrs,
       totalCargo

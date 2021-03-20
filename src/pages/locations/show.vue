@@ -23,14 +23,20 @@
       </option>
     </select>
     
-    <SpaButton 
-      v-if="currentShip && currentShip.location.symbol === data.location.symbol"
-      :disabled="currentShip === null"
-      @click="onClickCreateFlightPath"
+    <div
+      v-if="currentShip"
     >
-      Create flight path
-    </SpaButton>
+      <SpaButton 
+        v-if="currentShip.location.symbol === data.location.symbol"
+        :disabled="currentShip === null"
+        @click="onClickCreateFlightPath"
+      >
+        Create flight path
+      </SpaButton>
 
+      <hr class="my-8">
+      <UserShipCard :ship="currentShip" />
+    </div>
     <hr class="my-8">
 
     <div v-if="marketplace && currentShip">
@@ -103,6 +109,7 @@ import {Cargo, Location, MarketplaceGood, Ship, Transaction} from '@/types';
 import TableContainer, { ITableHeader } from '@/components/table/TableContainer.vue';
 import TextInput from '@/components/TextInput.vue';
 import SecondaryTitle from '@/components/SecondaryTitle.vue';
+import UserShipCard from '@/components/UserShipCard.vue';
 
 export default defineComponent({
   components: {
@@ -110,7 +117,8 @@ export default defineComponent({
     SpaButton,
     TableContainer,
     TextInput,
-    SecondaryTitle, 
+    SecondaryTitle,
+    UserShipCard, 
   },
   setup() {
     const route = useRoute();
