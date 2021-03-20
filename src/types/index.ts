@@ -21,6 +21,7 @@ export interface Cargo {
 
 export interface Ship {
     id: string;
+    flightPlanId?: string;
     location: string;
     x: number;
     y: number;
@@ -39,4 +40,15 @@ export interface System {
     symbol: string;
     name: string;
     locations: Location[];
+}
+
+export interface FlightPlan {
+    id: string;
+    shipId: string;
+    createdAt: Date;
+    arrivesAt: Date;
+    from: string;
+    to: string;
+    username: string;
+    shipType: string;
 }

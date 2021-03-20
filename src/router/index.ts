@@ -73,10 +73,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "LocationsShow" */ '../pages/locations/show.vue')
   },
   {
-    path: '/flight-plans',
-    name: 'FlightPlansIndex',
+    path: '/systems/:symbol/flight-plans',
+    name: 'SystemFlightPlansIndex',
     beforeEnter: auth,
-    component: () => import(/* webpackChunkName: "FlightPlansIndex" */ '../pages/flight-plans/index.vue')
+    component: () => import(/* webpackChunkName: "SystemFlightPlansIndex" */ '../pages/systems/flight-plans/index.vue')
   },
   {
     path: '/user/ships',

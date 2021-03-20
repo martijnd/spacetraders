@@ -4,6 +4,7 @@
     <UserShipCard
       v-for="ship of data.ships"
       :key="ship.id"
+      class="cursor-pointer"
       :ship="ship"
       @click="$router.push(`/user/ships/${ship.id}`)"
     />

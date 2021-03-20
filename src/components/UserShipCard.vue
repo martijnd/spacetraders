@@ -1,5 +1,5 @@
 <template>
-  <DataCard class="bg-blue-700 hover:bg-blue-900 text-white cursor-pointer">
+  <DataCard class="bg-blue-700 hover:bg-blue-900 text-white max-w-lg">
     <template #default>
       <div>
         <div class="flex justify-between items-center border-b">
@@ -53,6 +53,8 @@
                 <div>Total volume: {{ cargo.totalVolume }}</div>
               </li>
             </ul>
+            <hr>
+            <span>Total: {{ totalCargo }} / {{ ship.maxCargo }}</span>
           </div>
         </div>
       </div>
@@ -99,10 +101,25 @@ export default defineComponent({
         label: 'Weapons',
         value: props.ship.weapons,
       },
+      {
+        label: 'Space available',
+        value: props.ship.spaceAvailable,
+      },
+      {
+        label: 'X',
+        value: props.ship.x,
+      },
+      {
+        label: 'Y',
+        value: props.ship.y,
+      },
     ];
+
+    const totalCargo = props.ship.cargo.reduce((acc, curr) => acc + curr.quantity, 0);
 
     return {
       attrs,
+      totalCargo
     };
   },
 });
