@@ -1,6 +1,6 @@
 <template>
   <nav class="border-b shadow">
-    <div class="container max-w-screen-lg mx-auto flex justify-between items-center p-4">
+    <div class="mx-auto flex justify-between items-center p-4">
       <div
         v-if="$store.state.user"
         class="space-x-4 md:space-x-8"

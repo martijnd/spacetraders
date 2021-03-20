@@ -33,16 +33,20 @@ export default defineComponent({
               to: '/loans'
           },
           {
-              name: 'Locations',
-              to: '/locations'
-          },
-          {
               name: 'Ships',
               to: '/ships'
           },
           {
               name: 'Systems',
               to: '/systems'
+          },
+          {
+              name: 'Flight plans',
+              to: '/flight-plans'
+          },
+          {
+              name: 'My ships',
+              to: '/user/ships'
           }
       ];
 

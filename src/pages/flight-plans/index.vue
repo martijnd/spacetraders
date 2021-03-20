@@ -2,7 +2,7 @@
   <PrimaryTitle
     class="mb-8"
   >
-    Systems
+    Flight plans
   </PrimaryTitle>
   <div
     v-if="data"
@@ -31,13 +31,15 @@ import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
 import { System } from '@/types';
+import { useStore } from '@/store';
 
 export default defineComponent({
   components: {
     PrimaryTitle
   },
   setup () {
-    const {data, error} = useSWRV<{systems: System[]}>('/game/systems', fetcher);
+    const store = useStore();
+    const {data, error} = useSWRV<{systems: System[]}>(`/users/${store.state.user?.username}/flight-plans`, fetcher);
 
     return {
         data, 

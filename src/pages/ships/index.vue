@@ -11,7 +11,6 @@
     <ShipCard
       v-for="ship of data.ships"
       :key="ship.type"
-      class="bg-blue-700 hover:bg-blue-900 text-white"
       :ship="ship"
     />
   </div>

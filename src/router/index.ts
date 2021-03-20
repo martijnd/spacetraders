@@ -61,10 +61,34 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "SystemsIndex" */ '../pages/systems/index.vue')
   },
   {
+    path: '/systems/:symbol',
+    name: 'SystemsShow',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "SystemsShow" */ '../pages/systems/show.vue')
+  },
+  {
     path: '/locations/:symbol',
     name: 'LocationsShow',
     beforeEnter: auth,
     component: () => import(/* webpackChunkName: "LocationsShow" */ '../pages/locations/show.vue')
+  },
+  {
+    path: '/flight-plans',
+    name: 'FlightPlansIndex',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "FlightPlansIndex" */ '../pages/flight-plans/index.vue')
+  },
+  {
+    path: '/user/ships',
+    name: 'UserShips',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "UserShips" */ '../pages/user/ships/index.vue')
+  },
+  {
+    path: '/user/ships/:shipId',
+    name: 'UserShipsShow',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "UserShipsShow" */ '../pages/user/ships/show.vue')
   },
   {
     path: '/login',
