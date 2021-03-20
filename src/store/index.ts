@@ -33,6 +33,11 @@ const mutations: MutationTree<State> = {
   setUserData(state, user: User) {
     state.user = user;
     state.authenticated = true;
+  },
+  updateCredits(state, amount) {
+    if (state.user) {
+      state.user.credits = amount;
+    }
   }
 };
 
@@ -51,6 +56,9 @@ const actions: ActionTree<State, State> = {
   },
   logout ({commit}) {
     commit('logout');
+  },
+  updateCredits({commit}, amount) {
+    commit('updateCredits', amount);
   }
 };
 export const store = createStore<State>({

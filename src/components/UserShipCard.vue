@@ -20,22 +20,6 @@
             <span class="text-right">{{ attr.value }}</span>
           </div>
           <div
-            v-if="ship.purchaseLocations"
-            class="mt-4"
-          >
-            <h4 class="font-bold text-xl">
-              Locations
-            </h4>
-            <ul>
-              <li
-                v-for="location of ship.purchaseLocations"
-                :key="location.location"
-              >
-                <span class="text-right">{{ location.location }} - {{ new Intl.NumberFormat('nl-NL').format(location.price) }}</span>
-              </li>
-            </ul>
-          </div>
-          <div
             v-if="ship.cargo"
             class="mt-4"
           >
@@ -77,6 +61,10 @@ export default defineComponent({
   },
   setup(props) {
     const attrs: { label: string; value: string | number }[] = [
+      {
+        label: 'Location',
+        value: props.ship.location,
+      },
       {
         label: 'Manufacturer',
         value: props.ship.manufacturer,

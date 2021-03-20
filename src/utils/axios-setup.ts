@@ -4,9 +4,9 @@ import axios from 'axios';
 export function axiosSetup (): void {
 
   axios.interceptors.response.use((response) => response, (error) => {
-    if (error.response.status >= 400 && error.response.status < 500) {
-      store.dispatch('logout');
-    }
+    // if (error.response.status > 400 && error.response.status < 500) {
+    //   store.dispatch('logout');
+    // }
 
     return Promise.reject(error);
   });

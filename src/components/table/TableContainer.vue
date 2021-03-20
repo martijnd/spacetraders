@@ -11,6 +11,11 @@
         >
           {{ header.text }}
         </TableHeader>
+        <TableHeader
+          v-if="$slots.actions"
+        >
+          Actions
+        </TableHeader>
       </tr>
     </thead>
     <tbody>
@@ -24,6 +29,12 @@
         >
           {{ item[header.key] }}
         </TableCell>
+        <TableCell v-if="$slots.actions">
+          <slot
+            name="actions"
+            :item="item"
+          />
+        </TableCell>
       </tr>
     </tbody>
   </table>
@@ -33,6 +44,11 @@
 import { defineComponent } from 'vue';
 import TableCell from './TableCell.vue';
 import TableHeader from './TableHeader.vue';
+
+export interface ITableHeader {
+  key: string;
+  text: string;
+}
 
 export default defineComponent({
   components: { TableCell, TableHeader },

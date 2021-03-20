@@ -52,3 +52,32 @@ export interface FlightPlan {
     username: string;
     shipType: string;
 }
+
+export interface Location {
+    symbol: string;
+    type: string;
+    name: string;
+    x: number;
+    y: number;
+    ships: Ship[];
+}
+
+export interface MarketplaceGood {
+    symbol: string;
+    volumePerUnit: number;
+    pricePerUnit: number;
+    quantityAvailable: number;
+}
+
+export interface Order {
+    good: string;
+    pricePerUnit: number;
+    quantity: number;
+    total: number;
+}
+
+export interface Transaction {
+    credits: number;
+    order: Order;
+    ship: Ship;
+}

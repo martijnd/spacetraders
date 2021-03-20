@@ -6,16 +6,27 @@
       :ship="data.ship"
     />
 
-    Current flight plan
+    <PrimaryTitle>Ship's location</PrimaryTitle>
+    <router-link :to="`/locations/${data.ship.location}`">
+      {{ data.ship.location }}
+    </router-link>
 
-    <div v-if="flightPlan">
-      {{ flightPlan }}
+    <PrimaryTitle> Current flight plan</PrimaryTitle>
+
+    <div
+      v-if="flightPlan"
+      class="grid grid-cols-2"
+    >
+      <h3>Fuel consumed</h3> <span>{{ flightPlan.fuelConsumed }}</span>
+    </div>
+    <div v-else>
+      None
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';   
 import PrimaryTitle from '@/components/PrimaryTitle.vue';

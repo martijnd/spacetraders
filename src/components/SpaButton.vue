@@ -3,7 +3,7 @@
     :is="to ? 'router-link' : 'button'"
     :to="to"
     v-bind="$attrs"
-    :class="`${colorClasses} font-semibold rounded py-2 px-4 inline-block hover:shadow transition-colors duration-100`"
+    :class="`${colorClasses} disabled:opacity-50 font-semibold rounded py-2 px-4 inline-block hover:shadow transition-colors duration-100`"
   >
     <slot />
   </component>
