@@ -1,20 +1,25 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="flex flex-col min-h-screen">
     <Nav />
-    <main class="container max-w-screen-lg mx-auto p-4 flex-grow">
-      <router-view />
-    </main>
+    <div class="md:flex flex-grow">
+      <NavigationBar />
+      <main class="container flex-1 max-w-screen-lg p-4 mx-auto">
+        <router-view />
+      </main>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Nav from './components/Nav.vue';
+import NavigationBar from './components/NavigationBar.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     Nav,
+    NavigationBar,
   },
 });
 </script>
