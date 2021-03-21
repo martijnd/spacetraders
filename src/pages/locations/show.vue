@@ -5,7 +5,7 @@
     </PrimaryTitle>
 
     <select
-      v-model="currentShip"
+      v-model="selectedShip"
       class="border px-4 py-2"
     >
       <option
@@ -16,7 +16,7 @@
         Select a ship
       </option>
       <option
-        v-for="ship of ships.ships"
+        v-for="ship of ships"
         :key="ship.id"
         :value="ship"
         selected
@@ -25,7 +25,7 @@
       </option>
     </select>
     <SpaButton 
-      :disabled="currentShip && currentShip.location === data.location.symbol"
+      :disabled="selectedShip && selectedShip.location === data.location.symbol"
       @click="onClickCreateFlightPath"
     >
       Create flight path
@@ -34,12 +34,12 @@
     <hr class="my-8">
 
     <Alert
-      v-if="marketplaceError && currentShip"
+      v-if="marketplaceError"
       type="error"
       :title="marketplaceError.response.data.error.message"
     />
 
-    <div v-if="marketplace && currentShip">
+    <div v-if="marketplace">
       <SecondaryTitle class="mb-4">
         Buying
       </SecondaryTitle>
@@ -56,6 +56,25 @@
                 placeholder="Amount"
                 type="number"
               />
+              <select
+                v-model="item.selectedShipId"
+                class="px-4 py-2 border"
+              >
+                <option
+                  disabled
+                  selected
+                  :value="undefined"
+                >
+                  Select a ship
+                </option>
+                <option
+                  v-for="ship of ships"
+                  :key="ship.id"
+                  :value="ship.id"
+                >
+                  {{ ship.manufacturer }}
+                </option>
+              </select>
               <SpaButton
                 @click="onPurchase(item)"
               >
@@ -65,31 +84,35 @@
           </template>
         </TableContainer>
       </div>
-
-      <SecondaryTitle class="mb-4">
-        Selling
-      </SecondaryTitle>
-
-      <div class="mb-4">
-        <TableContainer 
-          :items="currentShip.cargo"
-          :headers="sellingHeaders"
-        >
-          <template #actions="{item}">
-            <div class="flex items-center">
-              <TextInput
-                v-model="item.sellQuantity"
-                placeholder="Amount"
-                type="number"
-              />
-              <SpaButton
-                @click="onSell(item)"
-              >
-                Sell
-              </SpaButton>
-            </div>
-          </template>
-        </TableContainer>
+      <div
+        v-for="ship of ships"
+        :key="ship.id"
+      >
+        <SecondaryTitle class="mb-4">
+          {{ ship.manufacturer }}
+        </SecondaryTitle>
+  
+        <div class="mb-4">
+          <TableContainer
+            :items="selectedShip.cargo"
+            :headers="sellingHeaders"
+          >
+            <template #actions="{item}">
+              <div class="flex items-center">
+                <TextInput
+                  v-model="item.sellQuantity"
+                  placeholder="Amount"
+                  type="number"
+                />
+                <SpaButton
+                  @click="onSell(item, ship)"
+                >
+                  Sell
+                </SpaButton>
+              </div>
+            </template>
+          </TableContainer>
+        </div>
       </div>
     </div>
   </div>
@@ -104,7 +127,7 @@ import { useRoute } from 'vue-router';
 import { useStore } from '@/store';
 import SpaButton from '@/components/SpaButton.vue';
 import axios from 'axios';
-import {Cargo, Location, MarketplaceGood, Ship, Transaction} from '@/types';
+import { Cargo, Location, MarketplaceGood, Ship, Transaction } from '@/types';
 import TableContainer, { ITableHeader } from '@/components/table/TableContainer.vue';
 import TextInput from '@/components/TextInput.vue';
 import SecondaryTitle from '@/components/SecondaryTitle.vue';
@@ -121,12 +144,21 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
+    const store = useStore();
+    const ships = ref<Ship[]>([]);
+    const selectedShip = ref<Ship|null>(null);
     onMounted(async () => {
-      if (route.query.ship) {
-        const response = await axios.get(`/users/${store.state.user?.username}/ships/${route.query.ship}`);
-        currentShip.value = response.data.ship;
-      }
+      getShips();
     });
+
+    async function getShips() {
+      const response = await axios.get(`/users/${store.state.user?.username}/ships`);
+      ships.value = response.data.ships;
+
+      if (ships.value.length > 0) {
+        selectedShip.value = ships.value[0];
+      }
+    }
     const symbol = route.params.symbol;
     const { data, error } = useSWRV<{ location: Location }>(
       `/game/locations/${symbol}`,
@@ -140,16 +172,9 @@ export default defineComponent({
         shouldRetryOnError: false,
       });
 
-    const store = useStore();
-     const { data: ships } = useSWRV<{ locations: Location }>(
-      `/users/${store.state.user?.username}/ships`,
-      fetcher
-    );
-
-    const currentShip = ref<Ship|null>(null);
     async function onClickCreateFlightPath() {
       await axios.post(`/users/${store.state.user?.username}/flight-plans`, {
-        shipId: currentShip.value?.id,
+        shipId: selectedShip.value?.id,
         destination: symbol
       });
     }
@@ -188,12 +213,12 @@ export default defineComponent({
       }
     ]);
 
-    async function onPurchase (item: MarketplaceGood&{purchaseQuantity?: number}) {
+    async function onPurchase (item: MarketplaceGood&{purchaseQuantity?: number, selectedShipId: string}) {
       try {
 
         const response = await axios.post(`/users/${store.state.user?.username}/purchase-orders`, {
           username: store.state.user?.username,
-          shipId: currentShip.value?.id,
+          shipId: item.selectedShipId,
           good: item.symbol,
           quantity: item.purchaseQuantity
         });
@@ -207,15 +232,15 @@ export default defineComponent({
 
     function onTransaction(data: Transaction) {
         store.dispatch('updateCredits', data.credits);
-        currentShip.value = data.ship;
+        selectedShip.value = data.ship;
         mutate();
     }
 
-    async function onSell (item: Cargo&{sellQuantity?: number}) {
+    async function onSell (item: Cargo&{sellQuantity?: number}, ship: Ship) {
       try {
         const response = await axios.post(`/users/${store.state.user?.username}/sell-orders`, {
           username: store.state.user?.username,
-          shipId: currentShip.value?.id,
+          shipId: ship.id,
           good: item.good,
           quantity: item.sellQuantity
         });
@@ -231,7 +256,7 @@ export default defineComponent({
       data,
       error,
       ships,
-      currentShip,
+      selectedShip,
       onClickCreateFlightPath,
       marketplace,
       marketplaceHeaders,
