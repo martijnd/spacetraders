@@ -11,15 +11,16 @@
     </div>
 
     <div>
-      <div v-if="!flightPlan">
+      <div v-if="!flightPlan && locationData">
         <PrimaryTitle>Ship's location</PrimaryTitle>
         <router-link
           :to="`/locations/${data.ship.location}`"
         >
-          {{ data.ship.location }}
+          {{ locationData.location.name }} ({{ data.ship.location }})
         </router-link>
       </div>
-      <div v-else>
+      
+      <div v-if="flightPlan">
         <PrimaryTitle> Current flight plan</PrimaryTitle>
         <div
           class="grid grid-cols-2"
@@ -74,15 +75,23 @@ export default defineComponent({
     );
 
     // @ts-ignore
-    const {data: flightPlan, } = useSWRV(() => data.value?.ship.flightPlanId && 
+    const {data: flightPlan } = useSWRV(() => data.value?.ship.flightPlanId && 
       `/users/${store.state.user?.username}/flight-plans/${data.value?.ship.flightPlanId}`, fetcher, {
         refreshInterval: 1000
       });
 
+      // @ts-ignore
+      const { data: locationData } = useSWRV<{ location: Location }>(() => data.value?.ship.location &&
+      `/game/locations/${data.value?.ship.location}`,
+      fetcher
+    );
+
+
     return {
       data,
       error,
-      flightPlan
+      flightPlan,
+      locationData
     };
   },
 });

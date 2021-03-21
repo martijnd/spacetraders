@@ -5,12 +5,13 @@
   <div class="grid grid-cols-2">
     <div>
       <SecondaryTitle>Ships</SecondaryTitle>
-      <div
+      <router-link
         v-for="ship of $store.state.user.ships"
         :key="ship.id"
+        :to="`/user/ships/${ship.id}`"
       >
         {{ ship.manufacturer }}
-      </div>
+      </router-link>
     </div>
     <div>
       <SecondaryTitle>Loans</SecondaryTitle>

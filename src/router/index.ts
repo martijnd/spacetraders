@@ -61,6 +61,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "SystemsIndex" */ '../pages/systems/index.vue')
   },
   {
+    path: '/loans',
+    name: 'LoansIndex',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "LoansIndex" */ '../pages/loans/index.vue')
+  },
+  {
     path: '/systems/:symbol',
     name: 'SystemsShow',
     beforeEnter: auth,
