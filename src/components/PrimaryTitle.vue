@@ -1,7 +1,9 @@
 <template>
-  <h1 class="font-extrabold text-5xl mb-4">
+  <h2
+    class="font-extrabold text-5xl mb-4"
+  >
     <slot />
-  </h1>
+  </h2>
 </template>
 
 <script lang="ts">

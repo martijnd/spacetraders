@@ -1,12 +1,16 @@
 <template>
-  <DataCard class="bg-blue-700 hover:bg-blue-900 text-white max-w-lg">
+  <DataCard class="max-w-lg">
     <template #default>
       <div>
-        <div class="flex justify-between items-center border-b">
-          <h3 class="text-xl font-bold">
-            {{ ship.type }}
+        <div class="flex items-center justify-between mt-4 border-b">
+          <h3 class="text-2xl font-bold">
+            Location
           </h3>
-          <span class="text-sm">({{ ship.class }})</span>
+          <router-link
+            :to="`/locations/${ship.location}?ship=${ship.id}`"
+          >
+            {{ ship.location }}
+          </router-link>
         </div>
         <div class="pt-4">
           <div
@@ -23,16 +27,18 @@
             v-if="ship.cargo"
             class="mt-4"
           >
-            <h4 class="font-bold text-xl">
+            <h4 class="text-xl font-bold">
               Cargo
             </h4>
-            <ul>
-              <li
+            <ul class="divide-y-2">
+              <li 
                 v-for="cargo of ship.cargo"
                 :key="cargo.good"
+                class="py-2"
               >
-                <hr>
-                <div>Good: {{ cargo.good }}</div>
+                <h3 class="font-bold">
+                  {{ cargo.good }}
+                </h3>
                 <div>Quantity: {{ cargo.quantity }}</div>
                 <div>Total volume: {{ cargo.totalVolume }}</div>
               </li>
@@ -61,10 +67,6 @@ export default defineComponent({
   },
   setup(props) {
     const attrs: { label: string; value: string | number }[] = [
-      {
-        label: 'Location',
-        value: props.ship.location,
-      },
       {
         label: 'Manufacturer',
         value: props.ship.manufacturer,

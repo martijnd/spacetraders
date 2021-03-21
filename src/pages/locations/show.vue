@@ -1,6 +1,8 @@
 <template>
   <div v-if="data && ships">
-    <PrimaryTitle>{{ data.location.name }}</PrimaryTitle>
+    <PrimaryTitle class="mb-4">
+      Marketplace ({{ data.location.name }})
+    </PrimaryTitle>
 
     <select
       v-model="currentShip"
@@ -29,12 +31,6 @@
       Create flight path
     </SpaButton>
     
-    <div
-      v-if="currentShip"
-    >
-      <hr class="my-8">
-      <UserShipCard :ship="currentShip" />
-    </div>
     <hr class="my-8">
 
     <Alert
@@ -44,12 +40,11 @@
     />
 
     <div v-if="marketplace && currentShip">
-      <PrimaryTitle>Marketplace ({{ data.location.name }})</PrimaryTitle>
       <SecondaryTitle class="mb-4">
         Buying
       </SecondaryTitle>
 
-      <div class="flex flex-col mb-4">
+      <div class="mb-4">
         <TableContainer 
           :items="marketplace.location.marketplace"
           :headers="marketplaceHeaders"
@@ -75,7 +70,7 @@
         Selling
       </SecondaryTitle>
 
-      <div class="flex flex-col mb-4">
+      <div class="mb-4">
         <TableContainer 
           :items="currentShip.cargo"
           :headers="sellingHeaders"
@@ -101,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';   
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
@@ -113,7 +108,6 @@ import {Cargo, Location, MarketplaceGood, Ship, Transaction} from '@/types';
 import TableContainer, { ITableHeader } from '@/components/table/TableContainer.vue';
 import TextInput from '@/components/TextInput.vue';
 import SecondaryTitle from '@/components/SecondaryTitle.vue';
-import UserShipCard from '@/components/UserShipCard.vue';
 import Alert from '@/components/Alert.vue';
 
 export default defineComponent({
@@ -123,11 +117,16 @@ export default defineComponent({
     TableContainer,
     TextInput,
     SecondaryTitle,
-    UserShipCard,
     Alert, 
   },
   setup() {
     const route = useRoute();
+    onMounted(async () => {
+      if (route.query.ship) {
+        const response = await axios.get(`/users/${store.state.user?.username}/ships/${route.query.ship}`);
+        currentShip.value = response.data.ship;
+      }
+    });
     const symbol = route.params.symbol;
     const { data, error } = useSWRV<{ location: Location }>(
       `/game/locations/${symbol}`,
@@ -162,15 +161,15 @@ export default defineComponent({
       },
       {
         key: 'volumePerUnit',
-        text: 'Volume per unit',
+        text: 'Volume / unit',
       }, 
       {
         key: 'pricePerUnit',
-        text: 'Price per unit'
+        text: 'Price / unit'
       }, 
       {
         key: 'quantityAvailable',
-        text: 'Quantity available'
+        text: 'Quantity'
       }
     ]);
 

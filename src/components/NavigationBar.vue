@@ -33,16 +33,12 @@ export default defineComponent({
               to: '/loans'
           },
           {
-              name: 'Ships',
+              name: 'Available ships',
               to: '/ships'
           },
           {
               name: 'Systems',
               to: '/systems'
-          },
-          {
-              name: 'Flight plans',
-              to: '/flight-plans'
           },
           {
               name: 'My ships',

@@ -19,7 +19,7 @@
           {{ locationData.location.name }} ({{ data.ship.location }})
         </router-link>
       </div>
-      
+
       <div v-if="flightPlan">
         <PrimaryTitle> Current flight plan</PrimaryTitle>
         <div

@@ -1,5 +1,5 @@
 <template>
-  <th class="bg-blue-100 border text-left px-8 py-2">
+  <th class="bg-blue-100 border text-left px-2 py-2">
     <slot />
   </th>
 </template>
