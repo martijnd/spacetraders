@@ -15,40 +15,52 @@
     </ul>
     <hr class="mt-4">
     <div
-      v-if="$store.state.user"
+      v-if="data"
       id="ships"
       class="mt-4"
     >
       <h3 class="font-bold text-xl mb-2">
         Your ships
       </h3>
-      <router-link
-        v-for="ship of $store.state.user.ships"
+      <div
+        v-for="ship of data.user.ships"
         :key="ship.id"
-        :to="`/user/ships/${ship.id}`"
       >
-        <div
-         
-          class="dark:bg-gray-900 bg-gray-100 p-2"
-        >
-          <h4 class="font-bold text-xl rounded">
-            {{ ship.manufacturer }}
-          </h4> 
-          <small v-if="ship.location">Docked at {{ ship.location }}</small>
-          <small v-else>Currently travelling</small>
+        <div class="dark:bg-gray-900 bg-gray-100 p-2">
+          <router-link :to="`/user/ships/${ship.id}`">
+            <h4 class="font-bold text-xl rounded">
+              {{ ship.manufacturer }}
+            </h4>
+          </router-link>
+          <router-link
+            v-if="ship.location"
+            :to="`/locations/${ship.location}`"
+          >
+            <small
+              class="underline"
+            >Docked at {{ ship.location }}</small>
+          </router-link>
+          <small
+            v-else
+          >Currently travelling</small>
         </div>
-      </router-link>
+      </div>
     </div>
   </aside>
 </template>
 
 <script lang="ts">
+import { useStore } from '@/store';
+import { Ship } from '@/types';
+import { fetcher } from '@/utils/fetcher';
+import useSWRV from 'swrv';
 import { defineComponent } from 'vue';
 import NavLink from './NavLink.vue';
 
 export default defineComponent({
   components: { NavLink },
   setup() {
+    const store = useStore();
     const menuItems: { name: string; to: string }[] = [
       {
         name: 'Dashboard',
@@ -72,8 +84,14 @@ export default defineComponent({
       },
     ];
 
+    const { data } = useSWRV<{ ships: Ship[] }>(
+      `/users/${store.state.user?.username}`,
+      fetcher
+    );
+
     return {
-      menuItems
+      menuItems,
+      data
     };
   },
 });

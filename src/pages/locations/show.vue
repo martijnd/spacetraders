@@ -16,7 +16,7 @@
         Select a ship
       </option>
       <option
-        v-for="ship of ships"
+        v-for="ship of notPresentShips"
         :key="ship.id"
         :value="ship"
         selected
@@ -68,7 +68,7 @@
                   Select a ship
                 </option>
                 <option
-                  v-for="ship of ships"
+                  v-for="ship of presentShips"
                   :key="ship.id"
                   :value="ship.id"
                 >
@@ -85,11 +85,11 @@
         </TableContainer>
       </div>
       <div
-        v-for="ship of ships"
+        v-for="ship of presentShips"
         :key="ship.id"
       >
         <SecondaryTitle class="mb-4">
-          {{ ship.manufacturer }}
+          {{ ship.manufacturer }} - {{ ship.type }}
         </SecondaryTitle>
   
         <div class="mb-4">
@@ -119,7 +119,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import useSWRV from 'swrv';
 import { fetcher } from '@/utils/fetcher';   
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
@@ -151,6 +151,9 @@ export default defineComponent({
       getShips();
     });
 
+    const presentShips = computed(() => ships.value.filter(ship => ship.location === route.params.symbol));
+    const notPresentShips = computed(() => ships.value.filter(ship => ship.location !== route.params.symbol));
+
     async function getShips() {
       const response = await axios.get(`/users/${store.state.user?.username}/ships`);
       ships.value = response.data.ships;
@@ -177,6 +180,7 @@ export default defineComponent({
         shipId: selectedShip.value?.id,
         destination: symbol
       });
+      store.dispatch('fetchUserData');
     }
 
     const marketplaceHeaders = ref<ITableHeader[]>([
@@ -231,7 +235,7 @@ export default defineComponent({
     }
 
     function onTransaction(data: Transaction) {
-        store.dispatch('updateCredits', data.credits);
+        store.dispatch('fetchUserData');
         selectedShip.value = data.ship;
         mutate();
     }
@@ -256,7 +260,9 @@ export default defineComponent({
       data,
       error,
       ships,
+      presentShips,
       selectedShip,
+      notPresentShips,
       onClickCreateFlightPath,
       marketplace,
       marketplaceHeaders,
