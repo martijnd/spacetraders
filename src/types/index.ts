@@ -81,3 +81,8 @@ export interface Transaction {
     order: Order;
     ship: Ship;
 }
+
+export interface ShipLocation {
+  location: string;
+  price: number;
+}

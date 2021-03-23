@@ -1,4 +1,3 @@
-import { store } from '@/store';
 import axios from 'axios';
 
 export function axiosSetup (): void {
@@ -11,7 +10,7 @@ export function axiosSetup (): void {
     return Promise.reject(error);
   });
 
-  axios.interceptors.request.use(function (config) {
+  axios.interceptors.request.use(config => {
     config.headers.common = {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',

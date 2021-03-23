@@ -2,10 +2,6 @@
   <div v-if="data">
     <PrimaryTitle>{{ data.system.name }}</PrimaryTitle>
 
-    <router-link :to="`/systems/${data.system.symbol}/flight-plans`">
-      Flight plans
-    </router-link>
-
     <SecondaryTitle>Locations</SecondaryTitle>
     <div
       v-for="location of data.system.locations"

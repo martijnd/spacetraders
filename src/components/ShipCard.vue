@@ -28,10 +28,16 @@
                 v-for="location of ship.purchaseLocations"
                 :key="location.location"
               >
-                <span class="text-right">{{ location.location }} - {{ new Intl.NumberFormat('nl-NL').format(location.price) }}</span>
+                <span
+                  class="text-right"
+                >{{ location.location }} -
+                  {{
+                    new Intl.NumberFormat("nl-NL").format(location.price)
+                  }}</span>
                 <button
-                  v-if="$store.state.user.credits >= ship.price"
+                  v-if="$store.state.user.credits > location.price"
                   class="px-1 ml-2 text-sm font-bold text-white bg-blue-400 rounded"
+                  @click="onClickPurchaseShip(ship, location)"
                 >
                   Purchase
                 </button>
@@ -45,7 +51,9 @@
 </template>
 
 <script lang="ts">
-import { Ship } from '@/types';
+import { useStore } from '@/store';
+import { Location, Ship, ShipLocation } from '@/types';
+import axios from 'axios';
 import { defineComponent } from 'vue';
 import DataCard from './DataCard.vue';
 
@@ -85,8 +93,26 @@ export default defineComponent({
       },
     ];
 
+    const store = useStore();
+    async function onClickPurchaseShip({type}: Ship, location: ShipLocation) {
+      try {
+        const response = await axios.post(
+          `/users/${store.state.user?.username}/ships`,
+          {
+            location: location.location,
+            type,
+          }
+        );
+        
+        return response.data;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     return {
       attrs,
+      onClickPurchaseShip,
     };
   },
 });
