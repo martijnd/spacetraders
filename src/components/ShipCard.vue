@@ -1,8 +1,8 @@
 <template>
-  <DataCard class="bg-blue-700 hover:bg-blue-900 text-white">
+  <DataCard class="text-white bg-blue-700 hover:bg-blue-900">
     <template #default>
       <div>
-        <div class="flex justify-between items-center border-b">
+        <div class="flex items-center justify-between border-b">
           <h3 class="text-xl font-bold">
             {{ ship.type }}
           </h3>
@@ -20,7 +20,7 @@
             <span class="text-right">{{ attr.value }}</span>
           </div>
           <div class="mt-4">
-            <h4 class="font-bold text-xl">
+            <h4 class="text-xl font-bold">
               Locations
             </h4>
             <ul>
@@ -29,6 +29,12 @@
                 :key="location.location"
               >
                 <span class="text-right">{{ location.location }} - {{ new Intl.NumberFormat('nl-NL').format(location.price) }}</span>
+                <button
+                  v-if="$store.state.user.credits >= ship.price"
+                  class="px-1 ml-2 text-sm font-bold text-white bg-blue-400 rounded"
+                >
+                  Purchase
+                </button>
               </li>
             </ul>
           </div>

@@ -5,11 +5,10 @@
     Ships
   </PrimaryTitle>
   <div
-    v-if="data"
     class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
   >
     <ShipCard
-      v-for="ship of data.ships"
+      v-for="ship of ships"
       :key="ship.type"
       :ship="ship"
     />
@@ -17,12 +16,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import useSWRV from 'swrv';
-import { fetcher } from '@/utils/fetcher';
+import { defineComponent, onMounted, ref } from 'vue';
 import PrimaryTitle from '@/components/PrimaryTitle.vue';
 import ShipCard from '@/components/ShipCard.vue';
 import { Ship } from '@/types';
+import axios from 'axios';
 
 export default defineComponent({
   components: {
@@ -30,11 +28,15 @@ export default defineComponent({
     ShipCard
   },
   setup () {
-    const {data, error} = useSWRV<{ships: Ship[]}>('/game/ships', fetcher);
+    const ships = ref<Ship[]>([]);
+
+    onMounted(async () => {
+      const response = await axios.get<{ships: Ship[]}>('/game/ships');
+      ships.value = response.data.ships;
+    });
 
     return {
-        data, 
-        error
+        ships
     };
   }
 });
