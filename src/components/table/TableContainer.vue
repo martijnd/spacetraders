@@ -1,7 +1,7 @@
 <template>
   <table
     v-bind="$attrs"
-    class="bg-white"
+    class="bg-white w-full"
   >
     <thead>
       <tr>

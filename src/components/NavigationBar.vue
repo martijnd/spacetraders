@@ -82,6 +82,10 @@ export default defineComponent({
         name: 'My ships',
         to: '/user/ships',
       },
+      {
+        name: 'Marketplaces',
+        to: '/marketplaces',
+      },
     ];
 
     const { data } = useSWRV<{ ships: Ship[] }>(

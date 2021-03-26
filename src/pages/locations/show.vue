@@ -183,25 +183,7 @@ export default defineComponent({
       store.dispatch('fetchUserData');
     }
 
-    const marketplaceHeaders = ref<ITableHeader[]>([
-      {
-        key: 'symbol',
-        text: 'Type'
-      },
-      {
-        key: 'volumePerUnit',
-        text: 'Volume / unit',
-      }, 
-      {
-        key: 'pricePerUnit',
-        text: 'Price / unit'
-      }, 
-      {
-        key: 'quantityAvailable',
-        text: 'Quantity'
-      }
-    ]);
-
+    
     const sellingHeaders = ref<ITableHeader[]>([
       {
         key: 'good',

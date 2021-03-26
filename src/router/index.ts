@@ -97,6 +97,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "UserShipsShow" */ '../pages/user/ships/show.vue')
   },
   {
+    path: '/marketplaces',
+    name: 'Marketplaces',
+    beforeEnter: auth,
+    component: () => import(/* webpackChunkName: "Marketplaces" */ '../pages/marketplaces/index.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     beforeEnter: guest,
